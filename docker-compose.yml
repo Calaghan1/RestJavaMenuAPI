@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: my_postgres
+    environment:
+      POSTGRES_USER: username      # Пользователь для PostgreSQL
+      POSTGRES_PASSWORD: password  # Пароль для PostgreSQL
+      POSTGRES_DB: postgres        # Имя базы данных
+    ports:
+      - "5432:5432"  # Пробрасываем порт 5432 из контейнера на хост
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Сохраняем данные базы данных на хосте
+  tomcat:
+    image: tomcat:9.0  # Указываем версию Tomcat
+    container_name: my_tomcat
+    ports:
+        - "8080:8080"  # Пробрасываем порт 8080 для доступа к Tomcat
+    volumes:
+        - ./webapps:/usr/local/tomcat/webapps  # Монтируем директорию с веб-приложениями
+        - ./conf:/usr/local/tomcat/conf
+volumes:
+  postgres_data:
+
+
