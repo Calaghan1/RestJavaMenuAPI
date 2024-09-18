@@ -28,15 +28,16 @@ public class ConnectMenuAndRestServlet extends HttpServlet {
         MenuDto mDto = menuService.getById(menuId);
         RestaurantsDto rDto = restaurantService.getById(restId);
         if (mDto != null && rDto != null) {
-            try {
-                restaurantToMenuService.save(menuId, restId);
+            if (restaurantToMenuService.save(menuId, restId)) {
                 response.setStatus(HttpServletResponse.SC_CREATED);
-            } catch (SQLException e) {
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                e.printStackTrace();
+                response.getWriter().write("Done");
+            } else {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().write("Failed");
             }
         } else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.getWriter().write("No such Menu or Restaurant found");
         }
     }
 }

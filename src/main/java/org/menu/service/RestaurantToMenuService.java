@@ -5,10 +5,20 @@ import org.menu.repository.RestaurantMenuRepo;
 import java.sql.SQLException;
 
 public class RestaurantToMenuService {
-    private RestaurantMenuRepo restaurantMenuRepo = new RestaurantMenuRepo();
-    public RestaurantToMenuService() {}
+    private RestaurantMenuRepo restaurantMenuRepo;
+    public RestaurantToMenuService() {
+       this.restaurantMenuRepo = new RestaurantMenuRepo();
+    }
+    public RestaurantToMenuService(RestaurantMenuRepo restaurantMenuRepo) {
+        this.restaurantMenuRepo = restaurantMenuRepo;
+    }
 
-    public void save(int menuID, int restaurantID) throws SQLException {
-        restaurantMenuRepo.save(restaurantID, menuID);
+    public boolean save(int menuID, int restaurantID) {
+        try {
+            return restaurantMenuRepo.save(menuID, restaurantID);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

@@ -22,12 +22,16 @@ public class RestaurantMenuRepo  {
             e.printStackTrace();
         }
     }
-    public void save(int restaurantId, int menuId) throws  SQLException{
+    public boolean save(int restaurantId, int menuId) throws  SQLException{
         try ( Connection con = cm.getConnection();
               PreparedStatement ps = con.prepareStatement(SqlStatments.INSERT.toString().formatted("restaurants_menus" , "restaurant_id, menu_id", "?, ?"));) {
             ps.setInt(1, restaurantId);
             ps.setInt(2, menuId);
-            ps.executeUpdate();
+            int res = ps.executeUpdate();
+            if (res == 1) {
+                return true;
+            }
+            return false;
         }
     }
 }

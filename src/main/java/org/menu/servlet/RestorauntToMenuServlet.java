@@ -37,13 +37,12 @@ public class RestorauntToMenuServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         int menuID = Integer.parseInt(request.getParameter("menuID"));
         int restaurantID = Integer.parseInt(request.getParameter("restaurantID"));
-        try {
-            service.save(menuID, restaurantID);
-        } catch (SQLException e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write(e.getMessage());
+        if (service.save(menuID, restaurantID)) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().write("Done");
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("Failed");
         }
-
-
     }
 }
