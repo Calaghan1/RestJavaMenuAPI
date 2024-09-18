@@ -1,7 +1,72 @@
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+         http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
 
-<web-app>
-  <display-name>Archetype Created Web Application</display-name>
+  <listener>
+    <listener-class>org.menu.servlet.ContextServlet</listener-class>
+  </listener>
+
+
+  <servlet>
+    <servlet-name>MenuServlet</servlet-name>
+    <servlet-class>org.menu.servlet.MenuServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>DishesServlet</servlet-name>
+    <servlet-class>org.menu.servlet.DishesServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>RestaurantServlet</servlet-name>
+    <servlet-class>org.menu.servlet.RestaurantsServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>MenuToRestuarantSerlet</servlet-name>
+    <servlet-class>org.menu.servlet.MenuToRestuarantServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>RestorauntToMenuServlet</servlet-name>
+    <servlet-class>org.menu.servlet.RestorauntToMenuServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ConnectMenuAndRestServlet</servlet-name>
+    <servlet-class>org.menu.servlet.ConnectMenuAndRestServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MenuServlet</servlet-name>
+    <url-pattern>/menu</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>MenuServlet</servlet-name>
+    <url-pattern>/menuall</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DishesServlet</servlet-name>
+    <url-pattern>/dish</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DishesServlet</servlet-name>
+    <url-pattern>/dishes</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RestaurantServlet</servlet-name>
+    <url-pattern>/restaurant</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RestaurantServlet</servlet-name>
+    <url-pattern>/restAll</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RestorauntToMenuServlet</servlet-name>
+    <url-pattern>/rest_to_menu</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>MenuToRestuarantSerlet</servlet-name>
+    <url-pattern>/menu_to_rest</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ConnectMenuAndRestServlet</servlet-name>
+    <url-pattern>/connect</url-pattern>
+  </servlet-mapping>
 </web-app>

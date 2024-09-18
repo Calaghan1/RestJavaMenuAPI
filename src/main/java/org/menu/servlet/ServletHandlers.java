@@ -1,2 +1,4 @@
-package org.menu.servlet;public class ServletHandlers {
+package org.menu.servlet;
+
+public class ServletHandlers {
 }
