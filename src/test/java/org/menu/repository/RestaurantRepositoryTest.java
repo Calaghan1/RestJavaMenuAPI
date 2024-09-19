@@ -2,6 +2,7 @@ package org.menu.repository;
 
 import org.junit.jupiter.api.*;
 import org.menu.db.ConnectionManager;
+import org.menu.model.Menu;
 import org.menu.model.Restaurants;
 import org.menu.servlet.dto.RestaurantsDto;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -14,6 +15,8 @@ public class RestaurantRepositoryTest {
             "postgres:16-alpine"
     );
     RestaurantsRepository restaurantsRepository;
+    MenuRepository menuRepository;
+    RestaurantMenuRepo restaurantMenuRepo;
     @BeforeAll
     static void beforeAll() {
         postgres.start();
@@ -26,6 +29,8 @@ public class RestaurantRepositoryTest {
     void setUp() throws SQLException {
         ConnectionManager connectionManager = new ConnectionManager(postgres.getJdbcUrl(), postgres.getUsername(), postgres.getPassword());
         restaurantsRepository = new RestaurantsRepository(connectionManager);
+        menuRepository = new MenuRepository(connectionManager);
+        restaurantMenuRepo = new RestaurantMenuRepo(connectionManager);
         restaurantsRepository.initTable();
     }
     @AfterEach
@@ -75,5 +80,26 @@ public class RestaurantRepositoryTest {
         Restaurants restaurants1 = restaurantsRepository.findById(1);
         Assertions.assertNull(restaurants1);
     }
+    @Test
+    void findRestByMenuid() throws SQLException {
+        Menu menu = new Menu();
+        menu.setName("Test");
+        menu.setDescription("Test");
+        Restaurants restaurants = new Restaurants();
+        restaurants.setName("Test");
+        Restaurants restaurants1 = new Restaurants();
+        restaurants1.setName("Test2");
+        menuRepository.initTable();
+        menuRepository.save(menu);
+        restaurantsRepository.save(restaurants);
+        restaurantsRepository.save(restaurants1);
 
+        restaurantMenuRepo.init();
+        restaurantMenuRepo.save(1, 1);
+        restaurantMenuRepo.save(2, 1);
+
+        List<Restaurants> restaurantsDtos = restaurantsRepository.findRestByMenuID(1);
+        Assertions.assertNotNull(restaurantsDtos);
+        Assertions.assertEquals(2, restaurantsDtos.size());
+    }
 }

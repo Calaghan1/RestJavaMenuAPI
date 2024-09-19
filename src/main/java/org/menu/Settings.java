@@ -11,5 +11,4 @@ public enum Settings {
     public String toString() {
         return displayName;
     }
-
 }

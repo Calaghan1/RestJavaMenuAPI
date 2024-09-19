@@ -17,7 +17,13 @@ import java.util.List;
 
 @WebServlet(name = "MenuToRestuarantSerlet", value = "menu_to_rest")
 public class MenuToRestuarantServlet extends HttpServlet {
-    private final transient MenuService service = new MenuService();
+    private  MenuService service;
+    public MenuToRestuarantServlet () {
+        service = new MenuService();
+    }
+    public MenuToRestuarantServlet (MenuService service) {
+        this.service = service;
+    }
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -30,6 +36,5 @@ public class MenuToRestuarantServlet extends HttpServlet {
             String json = gson.toJson(dto);
             response.getWriter().write(json);
         }
-
     }
 }

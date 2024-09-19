@@ -17,8 +17,16 @@ import java.util.List;
 
 @WebServlet(name = "RestorauntToMenuServlet", value = "rest_to_menu")
 public class RestorauntToMenuServlet extends HttpServlet {
-    private final transient RestaurantToMenuService service = new RestaurantToMenuService();
-    private final transient RestaurantService restService = new RestaurantService();
+    private transient RestaurantToMenuService service;
+    private transient RestaurantService restService;
+    public RestorauntToMenuServlet() {
+        service = new RestaurantToMenuService();
+        restService = new RestaurantService();
+    };
+    public RestorauntToMenuServlet (RestaurantToMenuService service, RestaurantService restService) {
+        this.service = service;
+        this.restService = restService;
+    }
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

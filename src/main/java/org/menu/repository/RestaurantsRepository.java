@@ -108,7 +108,7 @@ public class RestaurantsRepository {
     }
     public void dropTable() throws SQLException {
         try (Connection con = cm.getConnection();
-             PreparedStatement ps = con.prepareStatement(SqlStatments.DROP_TABLE.toString().formatted("restaurants"))) {
+             PreparedStatement ps = con.prepareStatement(SqlStatments.DROP_TABLE_CASCADE.toString().formatted("restaurants"))) {
             ps.executeUpdate();
         }
     }

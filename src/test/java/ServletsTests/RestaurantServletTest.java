@@ -92,4 +92,21 @@ public class RestaurantServletTest {
         // Check the response message
         Assertions.assertEquals("{\"message\": \"Menu created successfully\"}", stringWriter.toString().trim());
     }
+    @Test
+    void putTest() throws IOException, ServletException {
+        String jsonInput = "{\"name\":\"Test\"}";
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        BufferedReader reader = new BufferedReader(new StringReader(jsonInput));
+        RestaurantsDto savedRestaurantsDto = new RestaurantsDto(1, "Test", null);
+
+        when(response.getWriter()).thenReturn(writer);
+        when(request.getReader()).thenReturn(reader);
+        when(request.getMethod()).thenReturn("PUT");
+        when(request.getParameter("id")).thenReturn("1");
+        when(restaurantService.update(any(RestaurantsDto.class), anyInt())).thenReturn(savedRestaurantsDto);
+        servlet.service(request, response);
+
+        Assertions.assertEquals("{\"message\": \"Restaurant updated successfully\"}", stringWriter.toString().trim());
+    }
 }

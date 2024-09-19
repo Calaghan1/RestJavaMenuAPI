@@ -28,7 +28,7 @@ public class ConnectionManager {
         this.password = password;
     }
 
-    public static void init() {
+    public void init() {
         Logger log = Logger.getLogger(ConnectionManager.class.getName());
         try {
             // Register PostgreSQL Driver
@@ -45,12 +45,5 @@ public class ConnectionManager {
             throw new IllegalStateException("Error loading env");
         }
             return DriverManager.getConnection(url, user, password);
-    }
-    public static Connection getTestConnection(String url, String username, String password) {
-        try {
-            return DriverManager.getConnection(url, username, password);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 }

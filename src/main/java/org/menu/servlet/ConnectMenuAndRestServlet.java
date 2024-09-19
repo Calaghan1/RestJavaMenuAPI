@@ -16,9 +16,20 @@ import java.sql.SQLException;
 
 @WebServlet(name = "ConnectMenuAndRestServlet", value = "/connect")
 public class ConnectMenuAndRestServlet extends HttpServlet {
-    final transient MenuService menuService = new MenuService();
-    final transient RestaurantService restaurantService = new RestaurantService();
-    final transient RestaurantToMenuService restaurantToMenuService = new RestaurantToMenuService();
+    private MenuService menuService;
+    private RestaurantService restaurantService;
+    private RestaurantToMenuService restaurantToMenuService;
+    public ConnectMenuAndRestServlet() {
+        this.menuService = new MenuService();
+        this.restaurantService = new RestaurantService();
+        this.restaurantToMenuService = new RestaurantToMenuService();
+    }
+    public ConnectMenuAndRestServlet(MenuService menuService, RestaurantService restaurantService,
+                                     RestaurantToMenuService restaurantToMenuService) {
+        this.menuService = menuService;
+        this.restaurantService = restaurantService;
+        this.restaurantToMenuService = restaurantToMenuService;
+    }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");

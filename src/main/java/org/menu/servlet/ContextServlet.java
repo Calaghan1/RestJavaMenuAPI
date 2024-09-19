@@ -16,15 +16,31 @@ import java.util.logging.Logger;
 
 @WebListener
 public class ContextServlet implements  ServletContextListener {
+    Logger log = Logger.getLogger(ContextServlet.class.getName());
+    DishesRepository dishesRepository;
+    MenuRepository menuRepository;
+    RestaurantsRepository restaurantsRepository;
+    RestaurantMenuRepo restaurantMenuRepo;
+    ConnectionManager connectionManager;
+    public ContextServlet() {
+        this.dishesRepository = new DishesRepository();
+        this.menuRepository = new MenuRepository();
+        this.restaurantsRepository = new RestaurantsRepository();
+        this.restaurantMenuRepo = new RestaurantMenuRepo();
+        this.connectionManager = new ConnectionManager();
+    }
+    public ContextServlet(DishesRepository dishesRepository, MenuRepository menuRepository, RestaurantsRepository restaurantsRepository,
+                          RestaurantMenuRepo restaurantMenuRepo, ConnectionManager connectionManager) {
+        this.dishesRepository = dishesRepository;
+        this.menuRepository = menuRepository;
+        this.restaurantsRepository = restaurantsRepository;
+        this.restaurantMenuRepo = restaurantMenuRepo;
+        this.connectionManager = connectionManager;
+    }
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        Logger log = Logger.getLogger(ContextServlet.class.getName());
-        DishesRepository dishesRepository = new DishesRepository();
-        MenuRepository menuRepository = new MenuRepository();
-        RestaurantsRepository restaurantsRepository = new RestaurantsRepository();
-        RestaurantMenuRepo restaurantMenuRepo = new RestaurantMenuRepo();
         try {
-            ConnectionManager.init();
+            connectionManager.init();
             menuRepository.initTable();
             dishesRepository.initTable();
             restaurantsRepository.initTable();

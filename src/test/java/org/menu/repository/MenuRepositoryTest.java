@@ -4,6 +4,7 @@ import org.junit.jupiter.api.*;
 
 import org.menu.db.ConnectionManager;
 import org.menu.model.Menu;
+import org.menu.model.Restaurants;
 import org.menu.servlet.dto.MenuDto;
 import org.testcontainers.containers.PostgreSQLContainer;
 
@@ -15,6 +16,8 @@ class MenuRepositoryTest {
             "postgres:16-alpine"
     );
     MenuRepository menuRepository;
+    RestaurantsRepository restaurantsRepository;
+    RestaurantMenuRepo restaurantMenuRepo;
     @BeforeAll
     static void beforeAll() {
         postgres.start();
@@ -27,6 +30,8 @@ class MenuRepositoryTest {
     void setUp() throws SQLException {
         ConnectionManager connectionManager = new ConnectionManager(postgres.getJdbcUrl(), postgres.getUsername(), postgres.getPassword());
         menuRepository = new MenuRepository(connectionManager);
+        restaurantsRepository = new RestaurantsRepository(connectionManager);
+        restaurantMenuRepo = new RestaurantMenuRepo(connectionManager);
         menuRepository.initTable();
     }
     @AfterEach
@@ -92,6 +97,30 @@ class MenuRepositoryTest {
         menuRepository.delete(1);
         Menu menu2 = menuRepository.findById(1);
         Assertions.assertNull(menu2);
+    }
+
+    @Test
+    void findMenuByRestId() throws SQLException {
+        Restaurants restaurants = new Restaurants();
+        restaurants.setName("Restaurants");
+        restaurantsRepository.initTable();
+        restaurantsRepository.save(restaurants);
+        Menu menu = new Menu();
+        menu.setName("Test");
+        menu.setDescription("HAhAHAAHA");
+        Menu menu1 = new Menu();
+        menu1.setName("Test2");
+        menu1.setDescription("HAhAHAAAHA");
+        menuRepository.save(menu);
+        menuRepository.save(menu1);
+
+        restaurantMenuRepo.init();
+        restaurantMenuRepo.save(1, 1);
+        restaurantMenuRepo.save(1, 2);
+
+        List<Menu> menuList = menuRepository.findMenuByRestaurantId(1);
+        Assertions.assertNotNull(menuList);
+        Assertions.assertEquals(2, menuList.size());
 
     }
 }

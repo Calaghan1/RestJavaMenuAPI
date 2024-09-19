@@ -46,11 +46,7 @@ public class DushesServiceTest {
     }
     @Test
     public void findById() throws SQLException  {
-        Dishes dishes = new Dishes();
-        dishes.setId(1);
-        dishes.setName("Test");
-        dishes.setDescription("Test");
-        dishes.setMenuId(1);
+        Dishes dishes = new Dishes(1, "Test", "Test", 1);
         Mockito.when(dishesRepository.findById(1)).thenReturn(dishes);
         DishesDto dishesDto2 = dishesService.getById(1);
         Assertions.assertNotNull(dishesDto2);
@@ -105,4 +101,31 @@ public class DushesServiceTest {
         Assertions.assertEquals(dishesDto.getDescription(), dishesDto2.getDescription());
         Assertions.assertEquals(dishesDto.getMenuId(), dishesDto2.getMenuId());
     }
+
+    @Test
+    void getByIdFailed() throws SQLException {
+        Mockito.when(dishesRepository.findById(1)).thenThrow(SQLException.class);
+        DishesDto dishesDto2 = dishesService.getById(1);
+        Assertions.assertNull(dishesDto2);
+    }
+    @Test
+    void getAllFailed() throws SQLException {
+        Mockito.when(dishesRepository.findAll()).thenThrow(SQLException.class);
+        List<DishesDto> dishesDto2 = dishesService.getAll();
+        Assertions.assertNull(dishesDto2);
+    }
+    @Test
+    void saveTestFailed() throws SQLException {
+        Mockito.when(dishesRepository.save(any(Dishes.class))).thenThrow(SQLException.class);
+        DishesDto dishesDto = dishesService.save(any(DishesDto.class));
+        Assertions.assertNull(dishesDto);
+    }
+    @Test
+    void deleteTestFailed() throws SQLException {
+        Mockito.when(dishesRepository.delete(1)).thenThrow(SQLException.class);
+        boolean deleted = dishesService.delete(1);
+        Assertions.assertFalse(deleted);
+    }
+
+
 }
