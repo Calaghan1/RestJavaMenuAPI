@@ -1,7 +1,6 @@
 package org.menu.servlet;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

@@ -15,7 +15,7 @@ public class RestaurantToMenuService {
 
     public boolean save(int menuID, int restaurantID) {
         try {
-            return restaurantMenuRepo.save(menuID, restaurantID);
+            return restaurantMenuRepo.save(restaurantID, menuID);
         } catch (SQLException e) {
             e.printStackTrace();
         }

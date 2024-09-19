@@ -1,7 +1,6 @@
 package org.menu.repository;
 
 import org.menu.db.ConnectionManager;
-import org.menu.servlet.dto.RestaurantsDto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

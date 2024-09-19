@@ -12,7 +12,7 @@ import org.menu.servlet.dto.MenuDto;
 import org.menu.servlet.dto.RestaurantsDto;
 
 import java.io.IOException;
-import java.sql.SQLException;
+
 
 @WebServlet(name = "ConnectMenuAndRestServlet", value = "/connect")
 public class ConnectMenuAndRestServlet extends HttpServlet {

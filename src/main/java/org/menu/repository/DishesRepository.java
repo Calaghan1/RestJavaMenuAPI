@@ -2,7 +2,6 @@ package org.menu.repository;
 
 import org.menu.db.ConnectionManager;
 import org.menu.model.Dishes;
-import org.menu.servlet.dto.DishesDto;
 import java.util.logging.Logger;
 import java.sql.*;
 import java.util.ArrayList;

@@ -2,7 +2,7 @@ package org.menu.repository;
 
 import org.menu.db.ConnectionManager;
 import org.menu.model.Restaurants;
-import org.menu.servlet.dto.RestaurantsDto;
+
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -1,8 +1,5 @@
 package org.menu.servlet.dto;
 
-import org.menu.model.Dishes;
-
-import java.util.List;
 
 public class DishesDto {
     private int id;

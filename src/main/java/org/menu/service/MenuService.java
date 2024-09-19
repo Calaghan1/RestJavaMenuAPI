@@ -4,7 +4,6 @@ import org.menu.model.Menu;
 import org.menu.repository.DishesRepository;
 import org.menu.repository.MenuRepository;
 import org.menu.repository.mappers.MenuMapperInterface;
-import org.menu.servlet.dto.DishesDto;
 import org.menu.servlet.dto.MenuDto;
 
 import java.util.List;

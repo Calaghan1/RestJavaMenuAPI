@@ -6,13 +6,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.menu.repository.RestaurantsRepository;
 import org.menu.service.RestaurantService;
 import org.menu.service.RestaurantToMenuService;
 import org.menu.servlet.dto.RestaurantsDto;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet(name = "RestorauntToMenuServlet", value = "rest_to_menu")

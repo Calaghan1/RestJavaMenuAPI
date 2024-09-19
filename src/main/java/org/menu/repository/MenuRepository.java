@@ -2,8 +2,7 @@ package org.menu.repository;
 
 import org.menu.db.ConnectionManager;
 import org.menu.model.Menu;
-import org.menu.servlet.dto.DishesDto;
-import org.menu.servlet.dto.MenuDto;
+
 
 import java.sql.*;
 import java.util.ArrayList;

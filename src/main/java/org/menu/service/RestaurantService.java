@@ -3,9 +3,7 @@ package org.menu.service;
 
 import org.menu.model.Restaurants;
 import org.menu.repository.RestaurantsRepository;
-import org.menu.repository.mappers.MenuMapperInterface;
 import org.menu.repository.mappers.RestaurantsInterface;
-import org.menu.servlet.dto.MenuDto;
 import org.menu.servlet.dto.RestaurantsDto;
 
 import java.util.List;
