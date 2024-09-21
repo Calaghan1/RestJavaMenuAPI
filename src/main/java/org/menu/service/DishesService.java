@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class DishesService {
     Logger logger = Logger.getLogger(DishesService.class.getName());
     private final DishesRepository rep;
-    private final DishesMapperInterface mapper = DishesMapperInterface.INSTANCE;
+    private static final DishesMapperInterface mapper = DishesMapperInterface.INSTANCE;
     public DishesService(){
         rep = new DishesRepository();
     }
@@ -25,7 +25,7 @@ public class DishesService {
             Dishes resp = rep.findById(i);
             return mapper.toDto(resp);
         } catch (SQLException e) {
-            logger.severe("Error in" + this.getClass() + e.getMessage());
+            logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;
         }
     }
@@ -34,7 +34,7 @@ public class DishesService {
             List<Dishes> dishes = rep.findAll();
             return mapper.toDoList(dishes);
         } catch (SQLException e) {
-            logger.severe("Error in" + this.getClass() + e.getMessage());
+            logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;
         }
     }
@@ -43,7 +43,7 @@ public class DishesService {
             Dishes resp = rep.save(mapper.toEntity(dishesDto));
             return mapper.toDto(resp);
         } catch (SQLException e) {
-            logger.severe("Error in" + this.getClass() + e.getMessage());
+            logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;
         }
     }
@@ -52,7 +52,7 @@ public class DishesService {
             Dishes resp = rep.update(mapper.toEntity(dishesDto), id);
             return mapper.toDto(resp);
         } catch (SQLException e) {
-            logger.severe("Error in" + this.getClass() + e.getMessage());
+            logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;
         }
 
@@ -61,7 +61,7 @@ public class DishesService {
         try {
             return rep.delete(dishID);
         } catch (SQLException e) {
-            logger.severe("Error in" + this.getClass() + e.getMessage());
+            logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return false;
         }
     }

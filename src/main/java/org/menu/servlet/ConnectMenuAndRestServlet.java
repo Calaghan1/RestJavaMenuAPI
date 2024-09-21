@@ -1,6 +1,6 @@
 package org.menu.servlet;
 
-import jakarta.servlet.ServletException;
+
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,9 +16,9 @@ import java.io.IOException;
 
 @WebServlet(name = "ConnectMenuAndRestServlet", value = "/connect")
 public class ConnectMenuAndRestServlet extends HttpServlet {
-    private MenuService menuService;
-    private RestaurantService restaurantService;
-    private RestaurantToMenuService restaurantToMenuService;
+    private final transient  MenuService menuService;
+    private final transient  RestaurantService restaurantService;
+    private final transient  RestaurantToMenuService restaurantToMenuService;
     public ConnectMenuAndRestServlet() {
         this.menuService = new MenuService();
         this.restaurantService = new RestaurantService();
@@ -31,24 +31,28 @@ public class ConnectMenuAndRestServlet extends HttpServlet {
         this.restaurantToMenuService = restaurantToMenuService;
     }
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        int menuId = Integer.parseInt(request.getParameter("menuId"));
-        int restId = Integer.parseInt(request.getParameter("restId"));
-        MenuDto mDto = menuService.getById(menuId);
-        RestaurantsDto rDto = restaurantService.getById(restId);
-        if (mDto != null && rDto != null) {
-            if (restaurantToMenuService.save(menuId, restId)) {
-                response.setStatus(HttpServletResponse.SC_CREATED);
-                response.getWriter().write("Done");
+        try {
+            int menuId = Integer.parseInt(request.getParameter("menuId"));
+            int restId = Integer.parseInt(request.getParameter("restId"));
+            MenuDto mDto = menuService.getById(menuId);
+            RestaurantsDto rDto = restaurantService.getById(restId);
+            if (mDto != null && rDto != null) {
+                if (restaurantToMenuService.save(menuId, restId)) {
+                    response.setStatus(HttpServletResponse.SC_CREATED);
+                    response.getWriter().write("Done");
+                } else {
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    response.getWriter().write("Failed");
+                }
             } else {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                response.getWriter().write("Failed");
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                response.getWriter().write("No such Menu or Restaurant found");
             }
-        } else {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            response.getWriter().write("No such Menu or Restaurant found");
+        } catch (NumberFormatException | IOException  e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 }

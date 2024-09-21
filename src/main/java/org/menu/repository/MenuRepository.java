@@ -24,7 +24,7 @@ public class MenuRepository {
     public Menu findById(int id) throws SQLException{
         try(
                 Connection con = cm.getConnection();
-                PreparedStatement ps = con.prepareStatement(SqlStatments.SELECT_WERE.toString().formatted("*", "menu", "id"));
+                PreparedStatement ps = con.prepareStatement(SqlStatments.SELECT_WERE.toString().formatted("*", Menu.tableName(), "id"));
                 ) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -42,7 +42,7 @@ public class MenuRepository {
     public List<Menu> findAll() throws SQLException {
         try(
                 Connection con = cm.getConnection();
-                PreparedStatement ps = con.prepareStatement(SqlStatments.SELECT.toString().formatted("*", "menu"));
+                PreparedStatement ps = con.prepareStatement(SqlStatments.SELECT.toString().formatted("*", Menu.tableName()));
                 ) {
             ResultSet rs = ps.executeQuery();
             List<Menu> list = new ArrayList<>();
@@ -59,7 +59,7 @@ public class MenuRepository {
     public Menu save(Menu menuModel) throws SQLException {
         Menu menuSaved = null;
         try( Connection con = cm.getConnection();
-             PreparedStatement ps = con.prepareStatement(SqlStatments.INSERT.toString().formatted("menu", "name ,description","?, ?"),
+             PreparedStatement ps = con.prepareStatement(SqlStatments.INSERT.toString().formatted(Menu.tableName(), "name ,description","?, ?"),
                      Statement.RETURN_GENERATED_KEYS);) {
 
             ps.setString(1, menuModel.getName());
@@ -73,7 +73,7 @@ public class MenuRepository {
     }
     public Menu update(Menu updateModel, int menuId) throws SQLException {
         try (Connection con = cm.getConnection();
-             PreparedStatement ps = con.prepareStatement(SqlStatments.UPDATE.toString().formatted("menu", "name = ?, description = ?", "id = ?"));) {
+             PreparedStatement ps = con.prepareStatement(SqlStatments.UPDATE.toString().formatted(Menu.tableName(), "name = ?, description = ?", "id = ?"));) {
             ps.setString(1, updateModel.getName());
             ps.setString(2, updateModel.getDescription());
             ps.setInt(3, menuId);
@@ -88,7 +88,7 @@ public class MenuRepository {
     }
     public boolean delete(int id) throws SQLException {
         try (Connection con = cm.getConnection();
-             PreparedStatement ps = con.prepareStatement(SqlStatments.DELETE.toString().formatted("menu", "id = ?"));){
+             PreparedStatement ps = con.prepareStatement(SqlStatments.DELETE.toString().formatted(Menu.tableName(), "id = ?"));){
             ps.setInt(1, id);
             int rs = ps.executeUpdate();
             if (rs > 0) {
@@ -118,7 +118,7 @@ public class MenuRepository {
     }
     public void dropTable() throws SQLException {
         try (Connection con = cm.getConnection();
-             PreparedStatement ps = con.prepareStatement(SqlStatments.DROP_TABLE_CASCADE.toString().formatted("menu"))) {
+             PreparedStatement ps = con.prepareStatement(SqlStatments.DROP_TABLE_CASCADE.toString().formatted(Menu.tableName()))) {
             ps.executeUpdate();
         }
     }

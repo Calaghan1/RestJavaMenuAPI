@@ -44,6 +44,20 @@ public class RestaurantServletTest {
         Assertions.assertEquals(json.toString(), stringWriter.toString());
     }
     @Test
+    void getTestFailed() throws IOException, ServletException {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        when(response.getWriter()).thenReturn(writer);
+        when(request.getMethod()).thenReturn("GET");
+        when(request.getServletPath()).thenReturn("/restaurant");
+        when(request.getParameter("id")).thenReturn("1");
+        when(restaurantService.getById(1)).thenReturn(null);
+        servlet.service(request, response);
+        verify(response).setContentType("application/json");
+        verify(response).setCharacterEncoding("UTF-8");
+        Assertions.assertEquals("Not found", stringWriter.toString().trim());
+    }
+    @Test
     void getTest2() throws IOException, ServletException {
         List<RestaurantsDto> restaurantsDtoList = new ArrayList<>();
         RestaurantsDto restaurantsDto = new RestaurantsDto(1, "Test",  null);
@@ -64,12 +78,30 @@ public class RestaurantServletTest {
     }
     @Test
     void postTest() throws IOException, ServletException {
-        // Initialize inputs and expected results
         String jsonInput = "{\"name\":\"Test\",\"description\":\"Test\"}";
-        RestaurantsDto restaurantsDto = new RestaurantsDto(0, "Test", null); // No ID initially
         RestaurantsDto savedRestaurantsDto = new RestaurantsDto(1, "Test", null); // Object returned with ID
 
-        // Set up mock objects and interactions
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        BufferedReader reader = new BufferedReader(new StringReader(jsonInput));
+        when(request.getReader()).thenReturn(reader);
+        when(response.getWriter()).thenReturn(writer);
+        when(request.getMethod()).thenReturn("POST");
+        when(restaurantService.save(any(RestaurantsDto.class))).thenReturn(savedRestaurantsDto);  // Return saved menu
+
+        servlet.service(request, response);
+
+        verify(response).setContentType("application/json");
+        verify(response).setCharacterEncoding("UTF-8");
+
+        verify(restaurantService).save(any(RestaurantsDto.class));
+
+        Assertions.assertEquals("{\"message\": \"Menu created successfully\"}", stringWriter.toString().trim());
+    }
+    @Test
+    void postTestFailed() throws IOException, ServletException {
+        String jsonInput = "{\"name\":\"Test\",\"description\":\"Test\"}";
+
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);
         BufferedReader reader = new BufferedReader(new StringReader(jsonInput));
@@ -77,20 +109,16 @@ public class RestaurantServletTest {
         when(request.getReader()).thenReturn(reader);
         when(response.getWriter()).thenReturn(writer);
         when(request.getMethod()).thenReturn("POST");
-        when(restaurantService.save(any(RestaurantsDto.class))).thenReturn(savedRestaurantsDto);  // Return saved menu
+        when(restaurantService.save(any(RestaurantsDto.class))).thenReturn(null);  // Return saved menu
 
-        // Execute the servlet POST method
+
         servlet.service(request, response);
 
-        // Verify the content type and character encoding are as expected
         verify(response).setContentType("application/json");
         verify(response).setCharacterEncoding("UTF-8");
 
-        // Verify savedMenuDto is returned instead of null
-        verify(restaurantService).save(any(RestaurantsDto.class));
 
-        // Check the response message
-        Assertions.assertEquals("{\"message\": \"Menu created successfully\"}", stringWriter.toString().trim());
+        Assertions.assertEquals("Internal server error", stringWriter.toString().trim());
     }
     @Test
     void putTest() throws IOException, ServletException {
@@ -108,5 +136,42 @@ public class RestaurantServletTest {
         servlet.service(request, response);
 
         Assertions.assertEquals("{\"message\": \"Restaurant updated successfully\"}", stringWriter.toString().trim());
+    }
+    @Test
+    void putFailedTest() throws IOException, ServletException {
+        String jsonInput = "{\"name\":\"Test\"}";
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        BufferedReader reader = new BufferedReader(new StringReader(jsonInput));
+        when(response.getWriter()).thenReturn(writer);
+        when(request.getReader()).thenReturn(reader);
+        when(request.getMethod()).thenReturn("PUT");
+        when(request.getParameter("id")).thenReturn("1");
+        when(restaurantService.update(any(RestaurantsDto.class), anyInt())).thenReturn(null);
+        servlet.service(request, response);
+
+        Assertions.assertEquals("Internal server error", stringWriter.toString().trim());
+    }
+    @Test
+    void deleteTest() throws IOException, ServletException {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        when(response.getWriter()).thenReturn(writer);
+        when(request.getMethod()).thenReturn("DELETE");
+        when(request.getParameter("id")).thenReturn("1");
+        when(restaurantService.delete(1)).thenReturn(true);
+        servlet.service(request, response);
+        Assertions.assertEquals("{\"message\": \"Restaurant deleted successfully\"}", stringWriter.toString().trim());
+    }
+    @Test
+    void deleteFailTest() throws IOException, ServletException {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        when(response.getWriter()).thenReturn(writer);
+        when(request.getMethod()).thenReturn("DELETE");
+        when(request.getParameter("id")).thenReturn("1");
+        when(restaurantService.delete(1)).thenReturn(false);
+        servlet.service(request, response);
+        Assertions.assertEquals("Internal server error", stringWriter.toString().trim());
     }
 }

@@ -13,7 +13,7 @@ public class MenuService {
     Logger logger = Logger.getLogger("MenuService");
     private final MenuRepository menuRepo;
     private final DishesRepository dishRepo;
-    private final MenuMapperInterface mapper = MenuMapperInterface.INSTANCE;
+    private static final MenuMapperInterface mapper = MenuMapperInterface.INSTANCE;
 
     public MenuService() {
         this.menuRepo = new MenuRepository();
@@ -29,7 +29,7 @@ public class MenuService {
             menu.setDishes(dishRepo.findAllByMenuID(i));
             return mapper.toDto(menu);
         } catch (Exception e) {
-            logger.severe("Error in " + this.getClass().getName() + ": " + e.getMessage());
+            logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;
         }
 
@@ -42,7 +42,7 @@ public class MenuService {
             }
             return mapper.toDoList(menus);
         } catch (Exception e) {
-            logger.severe("Error in " + this.getClass().getName() + ": " + e.getMessage());
+            logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;
         }
 
@@ -52,7 +52,7 @@ public class MenuService {
             Menu resp = menuRepo.save(mapper.toEntity(menuDto));
             return mapper.toDto(resp);
         } catch (Exception e) {
-            logger.severe("Error in " + this.getClass().getName() + ": " + e.getMessage());
+            logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;
         }
 
@@ -62,7 +62,7 @@ public class MenuService {
             Menu resp = menuRepo.update(mapper.toEntity(menuDto), menuID);
             return mapper.toDto(resp);
         } catch (Exception e) {
-            logger.severe("Error in " + this.getClass().getName() + ": " + e.getMessage());
+            logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;
         }
 
@@ -71,7 +71,7 @@ public class MenuService {
         try {
             return menuRepo.delete(i);
         } catch (Exception e) {
-            logger.severe("Error in " + this.getClass().getName() + ": " + e.getMessage());
+            logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return false;
         }
 
@@ -81,7 +81,7 @@ public class MenuService {
             List<Menu> resp = menuRepo.findMenuByRestaurantId(id);
             return mapper.toDoList(resp);
         } catch (Exception e) {
-            logger.severe("Error in " + this.getClass().getName() + ": " + e.getMessage());
+            logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;
         }
 

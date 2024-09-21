@@ -24,17 +24,21 @@ public class MenuToRestuarantServlet extends HttpServlet {
     public MenuToRestuarantServlet (MenuService service) {
         this.service = service;
     }
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        int id = Integer.parseInt(request.getParameter("restId"));
-        List<MenuDto> dto = service.findMenuByRestaurantId(id);
-        if (dto == null ) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        } else {
-            Gson gson = new Gson();
-            String json = gson.toJson(dto);
-            response.getWriter().write(json);
+        try {
+            int id = Integer.parseInt(request.getParameter("restId"));
+            List<MenuDto> dto = service.findMenuByRestaurantId(id);
+            if (dto == null) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            } else {
+                Gson gson = new Gson();
+                String json = gson.toJson(dto);
+                response.getWriter().write(json);
+            }
+        } catch (NumberFormatException | IOException  e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 }

@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 public class RestaurantService {
     Logger logger = Logger.getLogger(RestaurantService.class.getName());
     private final RestaurantsRepository rep;
-    private final RestaurantsInterface mapper = RestaurantsInterface.INSTANCE;
+    private static final RestaurantsInterface mapper = RestaurantsInterface.INSTANCE;
 
     public RestaurantService() {
         this.rep = new RestaurantsRepository();
@@ -25,7 +25,7 @@ public class RestaurantService {
             Restaurants rest = rep.findById(i);
             return mapper.toDto(rest);
         } catch (Exception e) {
-            logger.severe("Error in " + this.getClass().getName() + ": " + e.getMessage());
+            logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;
         }
 
@@ -35,7 +35,7 @@ public class RestaurantService {
             List<Restaurants> rest = rep.findAll();
             return mapper.toDoListEntity(rest);
         } catch (Exception e) {
-            logger.severe("Error in " + this.getClass().getName() + ": " + e.getMessage());
+            logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;
         }
 
@@ -45,7 +45,7 @@ public class RestaurantService {
             Restaurants resp = rep.save(mapper.toEntity(dto));
             return mapper.toDto(resp);
         } catch (Exception e) {
-            logger.severe("Error in " + this.getClass().getName() + ": " + e.getMessage());
+            logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;
         }
 
@@ -55,7 +55,7 @@ public class RestaurantService {
             Restaurants resp = rep.update(mapper.toEntity(dto), id);
             return mapper.toDto(resp);
         } catch (Exception e) {
-            logger.severe("Error in " + this.getClass().getName() + ": " + e.getMessage());
+            logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;
         }
 
@@ -64,7 +64,7 @@ public class RestaurantService {
         try {
             return  rep.delete(id);
         } catch (Exception e) {
-            logger.severe("Error in " + this.getClass().getName() + ": " + e.getMessage());
+            logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return false;
         }
 
@@ -74,7 +74,7 @@ public class RestaurantService {
             List<Restaurants> rest = rep.findRestByMenuID(menuID);
             return  mapper.toDoListEntity(rest);
         } catch (Exception e) {
-            logger.severe("Error in " + this.getClass().getName() + ": " + e.getMessage());
+            logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;
         }
 

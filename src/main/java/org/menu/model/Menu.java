@@ -47,4 +47,7 @@ public class Menu {
     public void setRestaurants(List<Restaurants> restaurants) {
         this.restaurants = restaurants;
     }
+    public static String tableName() {
+        return "menu";
+    }
 }

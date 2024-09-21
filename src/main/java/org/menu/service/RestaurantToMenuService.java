@@ -3,9 +3,11 @@ package org.menu.service;
 import org.menu.repository.RestaurantMenuRepo;
 
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 public class RestaurantToMenuService {
-    private RestaurantMenuRepo restaurantMenuRepo;
+    Logger logger = Logger.getLogger(RestaurantService.class.getName());
+    private final RestaurantMenuRepo restaurantMenuRepo;
     public RestaurantToMenuService() {
        this.restaurantMenuRepo = new RestaurantMenuRepo();
     }
@@ -17,7 +19,7 @@ public class RestaurantToMenuService {
         try {
             return restaurantMenuRepo.save(restaurantID, menuID);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
         }
         return false;
     }

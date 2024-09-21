@@ -8,7 +8,11 @@ public class Restaurants {
     private String name;
     private List<Menu> menus;
     public Restaurants() {}
-    public Restaurants(int id, String name, String address, List<Menu> menus) {}
+    public Restaurants(int id, String name, List<Menu> menus) {
+        this.id = id;
+        this.name = name;
+        this.menus = menus;
+    }
     public int getId() {
         return id;
     }
@@ -26,5 +30,8 @@ public class Restaurants {
     }
     public void setMenus(List<Menu> menus) {
         this.menus = menus;
+    }
+    public static String tableName() {
+        return "restaurants";
     }
 }

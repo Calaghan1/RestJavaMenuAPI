@@ -36,4 +36,7 @@ public class Dishes {
     public void setMenuId(int menuId) {
         this.menuId = menuId;
     }
+    public static String tableName(){
+        return "dishes";
+    }
 }

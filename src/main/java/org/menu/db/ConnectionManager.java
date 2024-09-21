@@ -29,7 +29,6 @@ public class ConnectionManager {
     }
 
     public void init() {
-        Logger log = Logger.getLogger(ConnectionManager.class.getName());
         try {
             // Register PostgreSQL Driver
             Class.forName("org.postgresql.Driver");
