@@ -7,7 +7,7 @@ import org.menu.model.Menu;
 import org.menu.repository.DishesRepository;
 import org.menu.repository.MenuRepository;
 import org.menu.service.MenuService;
-import org.menu.servlet.dto.DishesDto;
+
 import org.menu.servlet.dto.MenuDto;
 import org.mockito.Mockito;
 
@@ -17,12 +17,13 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.*;
 
-public class MenuServiceTest {
+class MenuServiceTest {
     MenuRepository menuRepository = Mockito.mock(MenuRepository.class);
     DishesRepository dishesRepository = Mockito.mock(DishesRepository.class);
     MenuService menuService = new MenuService(menuRepository, dishesRepository);
+
     @Test
-    public void findMenuById() throws SQLException {
+    void findMenuById() throws SQLException {
         Menu menu = new Menu();
         menu.setId(1);
         menu.setName("test");
@@ -33,8 +34,9 @@ public class MenuServiceTest {
         Assertions.assertEquals("test", menuDto1.getName());
         Assertions.assertEquals("description", menuDto1.getDescription());
     }
+
     @Test
-    public void findMenuAndDishesById() throws SQLException {
+    void findMenuAndDishesById() throws SQLException {
         Menu menu = new Menu();
         menu.setId(1);
         menu.setName("test");
@@ -56,14 +58,15 @@ public class MenuServiceTest {
         Assertions.assertEquals("testDISH", menuDto1.getDishes().get(0).getName());
         Assertions.assertEquals("descriptionDISH", menuDto1.getDishes().get(0).getDescription());
     }
+
     @Test
-    public void deleteMenuById() throws SQLException {
+    void deleteMenuById() throws SQLException {
         Mockito.when(menuRepository.delete(1)).thenReturn(true);
         Assertions.assertTrue(menuService.delete(1));
     }
 
     @Test
-    public void updateMenu() throws SQLException  {
+    void updateMenu() throws SQLException {
         Menu menu = new Menu();
         menu.setId(1);
         menu.setName("test");
@@ -81,7 +84,7 @@ public class MenuServiceTest {
     }
 
     @Test
-    public void getAllTest() throws SQLException {
+    void getAllTest() throws SQLException {
         Menu menu = new Menu();
         menu.setId(1);
         menu.setName("test");
@@ -101,7 +104,7 @@ public class MenuServiceTest {
     }
 
     @Test
-    public void getMenyByRestId() throws SQLException {
+    void getMenyByRestId() throws SQLException {
         Menu menu = new Menu();
         menu.setId(1);
         menu.setName("test");
@@ -113,6 +116,7 @@ public class MenuServiceTest {
         Assertions.assertNotNull(menusDtoList);
         Assertions.assertEquals(1, menusDtoList.size());
     }
+
     @Test
     void saveTest() throws SQLException {
         MenuDto menuDto = new MenuDto();
@@ -127,39 +131,45 @@ public class MenuServiceTest {
         Assertions.assertEquals("test", menuDto1.getName());
         Assertions.assertEquals("description", menuDto1.getDescription());
     }
+
     @Test
     void getByIdTestFailed() throws SQLException {
         Mockito.when(menuRepository.findById(1)).thenThrow(SQLException.class);
         MenuDto menuDto = menuService.getById(1);
         Assertions.assertNull(menuDto);
     }
+
     @Test
     void getAllTestFailed() throws SQLException {
         Mockito.when(menuRepository.findAll()).thenThrow(SQLException.class);
         List<MenuDto> menuDtoList = menuService.getAll();
         Assertions.assertNull(menuDtoList);
     }
+
     @Test
     void deleteTestFailed() throws SQLException {
         Mockito.when(menuRepository.delete(1)).thenThrow(SQLException.class);
         Assertions.assertFalse(menuService.delete(1));
     }
+
     @Test
     void saveTestFailed() throws SQLException {
         Mockito.when(menuRepository.save(any(Menu.class))).thenThrow(SQLException.class);
         MenuDto menuDto = menuService.save(any(MenuDto.class));
         Assertions.assertNull(menuDto);
     }
+
     @Test
     void getByRestaurantIdTestFailed() throws SQLException {
         Mockito.when(menuRepository.findMenuByRestaurantId(1)).thenThrow(SQLException.class);
         List<MenuDto> menuDtoList = menuService.findMenuByRestaurantId(1);
         Assertions.assertNull(menuDtoList);
-     }
-     @Test
+    }
+
+    @Test
     void updateTestFailed() throws SQLException {
         Mockito.when(menuRepository.update(any(Menu.class), anyInt())).thenThrow(SQLException.class);
         MenuDto menuDto = menuService.getById(1);
         Assertions.assertNull(menuDto);
-     }
+    }
 }

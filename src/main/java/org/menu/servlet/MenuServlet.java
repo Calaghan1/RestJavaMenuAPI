@@ -19,12 +19,15 @@ import java.util.Objects;
 @WebServlet(name = "MenuServlet", value = {"/menu", "/menuall"})
 public class MenuServlet extends HttpServlet {
     private final transient MenuService service;
-    public MenuServlet(){
+
+    public MenuServlet() {
         this.service = new MenuService();
     }
-    public MenuServlet(MenuService service){
+
+    public MenuServlet(MenuService service) {
         this.service = service;
     }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("application/json");
@@ -48,10 +51,11 @@ public class MenuServlet extends HttpServlet {
                 String jsonResponse = gson.toJson(menuAll);
                 response.getWriter().write(jsonResponse);
             }
-        } catch (NumberFormatException | IOException  e) {
+        } catch (NumberFormatException | IOException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("application/json");
@@ -60,7 +64,6 @@ public class MenuServlet extends HttpServlet {
         String line;
         try {
             while ((line = request.getReader().readLine()) != null) {
-                System.out.println(line);
                 body.append(line);
             }
             Gson gson = new Gson();
@@ -73,7 +76,7 @@ public class MenuServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_CREATED);
                 response.getWriter().write("{\"message\": \"Menu created successfully\"}");
             }
-        } catch (NumberFormatException | IOException  e) {
+        } catch (NumberFormatException | IOException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
@@ -91,10 +94,11 @@ public class MenuServlet extends HttpServlet {
                 resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 resp.getWriter().write("{\"message\": \"No such menu exists\"}");
             }
-        } catch (NumberFormatException | IOException  e) {
+        } catch (NumberFormatException | IOException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
+
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) {
         resp.setContentType("application/json");
@@ -116,7 +120,7 @@ public class MenuServlet extends HttpServlet {
                 resp.setStatus(HttpServletResponse.SC_OK);
                 resp.getWriter().write("{\"message\": \"Menu updated successfully\"}");
             }
-        } catch (NumberFormatException | IOException  e) {
+        } catch (NumberFormatException | IOException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }

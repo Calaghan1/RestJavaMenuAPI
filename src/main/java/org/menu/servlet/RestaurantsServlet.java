@@ -11,44 +11,48 @@ import org.menu.servlet.dto.RestaurantsDto;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name="RestaurantServlet", value = {"/restaurant", "/restAll"})
+@WebServlet(name = "RestaurantServlet", value = {"/restaurant", "/restAll"})
 public class RestaurantsServlet extends HttpServlet {
     private final transient RestaurantService service;
+
     public RestaurantsServlet() {
         this.service = new RestaurantService();
     }
+
     public RestaurantsServlet(RestaurantService service) {
         this.service = service;
     }
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)  {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         try {
             if (request.getServletPath().equals("/restaurant")) { // b
                 int id = Integer.parseInt(request.getParameter("id"));
-                RestaurantsDto dto = service.getById(id);
-                if (dto == null) {
+                RestaurantsDto restaurantsDto = service.getById(id);
+                if (restaurantsDto == null) {
                     response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                     response.getWriter().println("Not found");
                 } else {
                     Gson gson = new Gson();
-                    String json = gson.toJson(dto);
+                    String json = gson.toJson(restaurantsDto);
                     response.getWriter().write(json);
                 }
             } else if (request.getServletPath().equals("/restAll")) {
-                List<RestaurantsDto> dtos = service.getAll();
+                List<RestaurantsDto> restaurantsDtoList = service.getAll();
                 Gson gson = new Gson();
-                String json = gson.toJson(dtos);
+                String json = gson.toJson(restaurantsDtoList);
                 response.getWriter().write(json);
             }
-        }catch (NumberFormatException | IOException  e) {
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            }
+        } catch (NumberFormatException | IOException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
 
     }
+
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)  {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         try {
@@ -58,21 +62,22 @@ public class RestaurantsServlet extends HttpServlet {
                 body.append(line);
             }
             Gson gson = new Gson();
-            RestaurantsDto dto = gson.fromJson(body.toString(), RestaurantsDto.class);
-            dto = service.save(dto);
-            if (dto == null) {
+            RestaurantsDto restaurantsDto = gson.fromJson(body.toString(), RestaurantsDto.class);
+            restaurantsDto = service.save(restaurantsDto);
+            if (restaurantsDto == null) {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 response.getWriter().println("Internal server error");
             } else {
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().write("{\"message\": \"Menu created successfully\"}");
             }
-        } catch (NumberFormatException | IOException  e) {
+        } catch (NumberFormatException | IOException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
+
     @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response)  {
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         try {
@@ -83,21 +88,22 @@ public class RestaurantsServlet extends HttpServlet {
                 body.append(line);
             }
             Gson gson = new Gson();
-            RestaurantsDto dto = gson.fromJson(body.toString(), RestaurantsDto.class);
-            dto = service.update(dto, id);
-            if (dto == null) {
+            RestaurantsDto restaurantsDto = gson.fromJson(body.toString(), RestaurantsDto.class);
+            restaurantsDto = service.update(restaurantsDto, id);
+            if (restaurantsDto == null) {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 response.getWriter().println("Internal server error");
             } else {
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().write("{\"message\": \"Restaurant updated successfully\"}");
             }
-        } catch (NumberFormatException | IOException  e) {
+        } catch (NumberFormatException | IOException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
+
     @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response)  {
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         try {
@@ -109,7 +115,7 @@ public class RestaurantsServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 response.getWriter().println("Internal server error");
             }
-        } catch (NumberFormatException | IOException  e) {
+        } catch (NumberFormatException | IOException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }

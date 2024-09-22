@@ -12,54 +12,61 @@ import java.util.logging.Logger;
 
 public class DishesService {
     Logger logger = Logger.getLogger(DishesService.class.getName());
-    private final DishesRepository rep;
+    private final DishesRepository repository;
     private static final DishesMapperInterface mapper = DishesMapperInterface.INSTANCE;
-    public DishesService(){
-        rep = new DishesRepository();
+
+    public DishesService() {
+        repository = new DishesRepository();
     }
-    public DishesService(DishesRepository rep){
-        this.rep = rep;
+
+    public DishesService(DishesRepository repository) {
+        this.repository = repository;
     }
+
     public DishesDto getById(int i) {
         try {
-            Dishes resp = rep.findById(i);
-            return mapper.toDto(resp);
+            Dishes dishes = repository.findById(i);
+            return mapper.toDto(dishes);
         } catch (SQLException e) {
             logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;
         }
     }
+
     public List<DishesDto> getAll() {
         try {
-            List<Dishes> dishes = rep.findAll();
+            List<Dishes> dishes = repository.findAll();
             return mapper.toDoList(dishes);
         } catch (SQLException e) {
             logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;
         }
     }
+
     public DishesDto save(DishesDto dishesDto) {
         try {
-            Dishes resp = rep.save(mapper.toEntity(dishesDto));
-            return mapper.toDto(resp);
+            Dishes dishes = repository.save(mapper.toEntity(dishesDto));
+            return mapper.toDto(dishes);
         } catch (SQLException e) {
             logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;
         }
     }
+
     public DishesDto update(DishesDto dishesDto, int id) {
         try {
-            Dishes resp = rep.update(mapper.toEntity(dishesDto), id);
-            return mapper.toDto(resp);
+            Dishes dishes = repository.update(mapper.toEntity(dishesDto), id);
+            return mapper.toDto(dishes);
         } catch (SQLException e) {
             logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;
         }
 
     }
+
     public boolean delete(int dishID) {
         try {
-            return rep.delete(dishID);
+            return repository.delete(dishID);
         } catch (SQLException e) {
             logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return false;

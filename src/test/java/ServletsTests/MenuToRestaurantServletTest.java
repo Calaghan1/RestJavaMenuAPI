@@ -7,10 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.menu.service.MenuService;
-import org.menu.service.RestaurantService;
-import org.menu.service.RestaurantToMenuService;
 import org.menu.servlet.MenuToRestuarantServlet;
-import org.menu.servlet.RestorauntToMenuServlet;
 import org.menu.servlet.dto.MenuDto;
 
 import java.io.IOException;
@@ -22,7 +19,7 @@ import java.util.List;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class MenuToRestaurantServletTest {
+class MenuToRestaurantServletTest {
 
     private final HttpServletRequest request = mock(HttpServletRequest.class);
     private final HttpServletResponse response = mock(HttpServletResponse.class);

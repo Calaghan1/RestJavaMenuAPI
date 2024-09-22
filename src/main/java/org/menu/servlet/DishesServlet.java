@@ -15,15 +15,18 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-@WebServlet(name="DishesServlet", value = {"/dish", "/dishes"})
-public class DishesServlet extends HttpServlet{
+@WebServlet(name = "DishesServlet", value = {"/dish", "/dishes"})
+public class DishesServlet extends HttpServlet {
     private final transient DishesService service;
+
     public DishesServlet() {
         this.service = new DishesService();
     }
+
     public DishesServlet(DishesService service) {
         this.service = service;
     }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("application/json");
@@ -48,10 +51,11 @@ public class DishesServlet extends HttpServlet{
                 response.getWriter().write(jsonResponse);
 
             }
-        } catch (NumberFormatException | IOException  e) {
+        } catch (NumberFormatException | IOException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("application/json");
@@ -72,10 +76,11 @@ public class DishesServlet extends HttpServlet{
                 response.setStatus(HttpServletResponse.SC_CREATED);
                 response.getWriter().write("{\"message\": \"Dish created successfully\"}");
             }
-        } catch (NumberFormatException | IOException  e) {
+        } catch (NumberFormatException | IOException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
+
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) {
         response.setCharacterEncoding("UTF-8");
@@ -97,10 +102,11 @@ public class DishesServlet extends HttpServlet{
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().write("{\"message\": \"Dish updated successfully\"}");
             }
-        } catch (NumberFormatException | IOException  e) {
+        } catch (NumberFormatException | IOException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
+
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
         response.setCharacterEncoding("UTF-8");
@@ -114,7 +120,7 @@ public class DishesServlet extends HttpServlet{
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 response.getWriter().write("{\"message\": \"Dish not found\"}");
             }
-        } catch (NumberFormatException | IOException  e) {
+        } catch (NumberFormatException | IOException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }

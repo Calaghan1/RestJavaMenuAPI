@@ -9,9 +9,13 @@ import java.util.List;
 
 @Mapper
 public interface RestaurantsInterface {
-    RestaurantsInterface INSTANCE  = Mappers.getMapper(RestaurantsInterface.class);
+    RestaurantsInterface INSTANCE = Mappers.getMapper(RestaurantsInterface.class);
+
     RestaurantsDto toDto(Restaurants restaurant);
+
     List<RestaurantsDto> toDoList(List<Restaurants> restaurants);
+
     Restaurants toEntity(RestaurantsDto restaurantsDto);
+
     List<RestaurantsDto> toDoListEntity(List<Restaurants> restaurants);
 }

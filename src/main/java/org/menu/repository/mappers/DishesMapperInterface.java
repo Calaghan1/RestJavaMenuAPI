@@ -11,9 +11,13 @@ import java.util.List;
 @Mapper
 public interface DishesMapperInterface {
 
-    DishesMapperInterface INSTANCE  = Mappers.getMapper(DishesMapperInterface.class);
+    DishesMapperInterface INSTANCE = Mappers.getMapper(DishesMapperInterface.class);
+
     DishesDto toDto(Dishes dishes);
+
     List<DishesDto> toDoList(List<Dishes> dishes);
+
     Dishes toEntity(DishesDto dto);
+
     List<DishesDto> toDoListEntity(List<Dishes> dishes);
 }

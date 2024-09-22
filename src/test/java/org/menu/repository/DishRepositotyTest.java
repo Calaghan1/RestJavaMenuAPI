@@ -4,27 +4,31 @@ import org.junit.jupiter.api.*;
 import org.menu.db.ConnectionManager;
 import org.menu.model.Dishes;
 import org.menu.model.Menu;
-import org.menu.servlet.dto.DishesDto;
-import org.menu.servlet.dto.MenuDto;
+import org.menu.service.ErrorHandler;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Logger;
 
-public class DishRepositotyTest {
+class DishRepositotyTest {
+    Logger logger = Logger.getLogger(this.getClass().getName());
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
             "postgres:16-alpine"
     );
     DishesRepository dishesRepository;
     MenuRepository menuRepository;
+
     @BeforeAll
     static void beforeAll() {
         postgres.start();
     }
+
     @AfterAll
     static void afterAll() {
         postgres.stop();
     }
+
     @BeforeEach
     void setUp() {
         try {
@@ -33,21 +37,23 @@ public class DishRepositotyTest {
             menuRepository = new MenuRepository(connectionManager);
             menuRepository.initTable();
             dishesRepository.initTable();
-        }catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
         }
 
     }
+
     @AfterEach
     void tearDown() {
         try {
             menuRepository.dropTable();
             dishesRepository.dropTable();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
         }
 
     }
+
     @Test
     void FindById() throws SQLException {
         Menu menu = new Menu();
@@ -66,8 +72,9 @@ public class DishRepositotyTest {
         Assertions.assertEquals(dishes.getMenuId(), dishes1.getMenuId());
 
     }
+
     @Test
-    void FindAll() throws SQLException{
+    void FindAll() throws SQLException {
         Menu menu = new Menu();
         menu.setName("Test");
         menu.setDescription("Test");
@@ -88,6 +95,7 @@ public class DishRepositotyTest {
         Assertions.assertEquals(dishList.get(0).getName(), dishes.getName());
         Assertions.assertEquals(dishList.get(1).getName(), dishes1.getName());
     }
+
     @Test
     void Update() throws SQLException {
         Menu menu = new Menu();
@@ -110,6 +118,7 @@ public class DishRepositotyTest {
         Assertions.assertEquals(dishes1.getDescription(), dishes2.getDescription());
         Assertions.assertEquals(dishes1.getMenuId(), dishes2.getMenuId());
     }
+
     @Test
     void Delete() throws SQLException {
         Menu menu = new Menu();

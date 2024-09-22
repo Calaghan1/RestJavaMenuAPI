@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.logging.Logger;
 
 public class RestaurantToMenuService {
-    Logger logger = Logger.getLogger(RestaurantService.class.getName());
+    Logger logger = Logger.getLogger(this.getClass().getName());
     private final RestaurantMenuRepo restaurantMenuRepo;
     public RestaurantToMenuService() {
        this.restaurantMenuRepo = new RestaurantMenuRepo();

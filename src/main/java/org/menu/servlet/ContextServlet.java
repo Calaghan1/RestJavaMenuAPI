@@ -15,13 +15,14 @@ import java.util.logging.Logger;
 
 
 @WebListener
-public class ContextServlet implements  ServletContextListener {
+public class ContextServlet implements ServletContextListener {
     Logger log = Logger.getLogger(ContextServlet.class.getName());
     DishesRepository dishesRepository;
     MenuRepository menuRepository;
     RestaurantsRepository restaurantsRepository;
     RestaurantMenuRepo restaurantMenuRepo;
     ConnectionManager connectionManager;
+
     public ContextServlet() {
         this.dishesRepository = new DishesRepository();
         this.menuRepository = new MenuRepository();
@@ -29,6 +30,7 @@ public class ContextServlet implements  ServletContextListener {
         this.restaurantMenuRepo = new RestaurantMenuRepo();
         this.connectionManager = new ConnectionManager();
     }
+
     public ContextServlet(DishesRepository dishesRepository, MenuRepository menuRepository, RestaurantsRepository restaurantsRepository,
                           RestaurantMenuRepo restaurantMenuRepo, ConnectionManager connectionManager) {
         this.dishesRepository = dishesRepository;
@@ -37,6 +39,7 @@ public class ContextServlet implements  ServletContextListener {
         this.restaurantMenuRepo = restaurantMenuRepo;
         this.connectionManager = connectionManager;
     }
+
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         try {

@@ -16,32 +16,36 @@ import java.util.List;
 public class RestorauntToMenuServlet extends HttpServlet {
     private final transient RestaurantToMenuService service;
     private final transient RestaurantService restService;
+
     public RestorauntToMenuServlet() {
         service = new RestaurantToMenuService();
         restService = new RestaurantService();
     }
-    public RestorauntToMenuServlet (RestaurantToMenuService service, RestaurantService restService) {
+
+    public RestorauntToMenuServlet(RestaurantToMenuService service, RestaurantService restService) {
         this.service = service;
         this.restService = restService;
     }
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)  {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         try {
             int id = Integer.parseInt(request.getParameter("menuID"));
-            List<RestaurantsDto> dto = restService.getAllRestaurantsByMenuID(id);
-            if (dto == null) {
+            List<RestaurantsDto> restaurantsDtoList = restService.getAllRestaurantsByMenuID(id);
+            if (restaurantsDtoList == null) {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             } else {
                 Gson gson = new Gson();
-                String json = gson.toJson(dto);
+                String json = gson.toJson(restaurantsDtoList);
                 response.getWriter().write(json);
             }
-        } catch (NumberFormatException | IOException  e) {
+        } catch (NumberFormatException | IOException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("application/json");
@@ -56,7 +60,7 @@ public class RestorauntToMenuServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().write("Failed");
             }
-        } catch (NumberFormatException | IOException  e) {
+        } catch (NumberFormatException | IOException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }

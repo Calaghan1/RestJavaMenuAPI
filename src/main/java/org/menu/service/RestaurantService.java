@@ -11,68 +11,75 @@ import java.util.logging.Logger;
 
 public class RestaurantService {
     Logger logger = Logger.getLogger(RestaurantService.class.getName());
-    private final RestaurantsRepository rep;
+    private final RestaurantsRepository repository;
     private static final RestaurantsInterface mapper = RestaurantsInterface.INSTANCE;
 
     public RestaurantService() {
-        this.rep = new RestaurantsRepository();
+        this.repository = new RestaurantsRepository();
     }
-    public RestaurantService(final RestaurantsRepository rep) {
-        this.rep = rep;
+
+    public RestaurantService(final RestaurantsRepository repository) {
+        this.repository = repository;
     }
+
     public RestaurantsDto getById(int i) {
         try {
-            Restaurants rest = rep.findById(i);
-            return mapper.toDto(rest);
+            Restaurants restaurants = repository.findById(i);
+            return mapper.toDto(restaurants);
         } catch (Exception e) {
             logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;
         }
 
     }
+
     public List<RestaurantsDto> getAll() {
         try {
-            List<Restaurants> rest = rep.findAll();
-            return mapper.toDoListEntity(rest);
+            List<Restaurants> restaurants = repository.findAll();
+            return mapper.toDoListEntity(restaurants);
         } catch (Exception e) {
             logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;
         }
 
     }
+
     public RestaurantsDto save(RestaurantsDto dto) {
         try {
-            Restaurants resp = rep.save(mapper.toEntity(dto));
-            return mapper.toDto(resp);
+            Restaurants restaurants = repository.save(mapper.toEntity(dto));
+            return mapper.toDto(restaurants);
         } catch (Exception e) {
             logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;
         }
 
     }
+
     public RestaurantsDto update(RestaurantsDto dto, int id) {
         try {
-            Restaurants resp = rep.update(mapper.toEntity(dto), id);
-            return mapper.toDto(resp);
+            Restaurants restaurants = repository.update(mapper.toEntity(dto), id);
+            return mapper.toDto(restaurants);
         } catch (Exception e) {
             logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;
         }
 
     }
+
     public boolean delete(int id) {
         try {
-            return  rep.delete(id);
+            return repository.delete(id);
         } catch (Exception e) {
             logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return false;
         }
 
     }
+
     public List<RestaurantsDto> getAllRestaurantsByMenuID(int menuID) {
         try {
-            List<Restaurants> rest = rep.findRestByMenuID(menuID);
-            return  mapper.toDoListEntity(rest);
+            List<Restaurants> restaurants = repository.findRestByMenuID(menuID);
+            return mapper.toDoListEntity(restaurants);
         } catch (Exception e) {
             logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;

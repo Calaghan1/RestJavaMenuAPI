@@ -7,78 +7,89 @@ import org.menu.model.Menu;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+
+
 public class MenuRepository {
-    Logger logger = Logger.getLogger("MenuRepository");
-    public final ConnectionManager  cm;
-    public MenuRepository() {this.cm = new ConnectionManager();}
-    public MenuRepository(ConnectionManager cm) {this.cm = cm;}
+    public final ConnectionManager connectionManager;
+
+    public MenuRepository() {
+        this.connectionManager = new ConnectionManager();
+    }
+
+    public MenuRepository(ConnectionManager connectionManager) {
+        this.connectionManager = connectionManager;
+    }
+
     public void initTable() throws SQLException {
-        try(
-                Connection con = cm.getConnection();
-                PreparedStatement ps = con.prepareStatement(SqlStatments.CREATE_MENU_TABLE.toString());
-                ) {
-            ps.executeUpdate();
+        try (
+                Connection connection = connectionManager.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(SqlStatments.CREATE_MENU_TABLE.toString());
+        ) {
+            preparedStatement.executeUpdate();
         }
     }
-    public Menu findById(int id) throws SQLException{
-        try(
-                Connection con = cm.getConnection();
-                PreparedStatement ps = con.prepareStatement(SqlStatments.SELECT_WERE.toString().formatted("*", Menu.tableName(), "id"));
-                ) {
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
+
+    public Menu findById(int id) throws SQLException {
+        try (
+                Connection connection = connectionManager.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(SqlStatments.SELECT_WERE.toString().formatted("*", Menu.tableName(), "id"));
+        ) {
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
             Menu menu = new Menu();
-            if (rs.next()) {
-                menu.setId(rs.getInt("id"));
-                menu.setName(rs.getString("name"));
-                menu.setDescription(rs.getString("description"));
+            if (resultSet.next()) {
+                menu.setId(resultSet.getInt("id"));
+                menu.setName(resultSet.getString("name"));
+                menu.setDescription(resultSet.getString("description"));
             } else {
                 return null;
             }
             return menu;
         }
     }
+
     public List<Menu> findAll() throws SQLException {
-        try(
-                Connection con = cm.getConnection();
-                PreparedStatement ps = con.prepareStatement(SqlStatments.SELECT.toString().formatted("*", Menu.tableName()));
-                ) {
-            ResultSet rs = ps.executeQuery();
+        try (
+                Connection connection = connectionManager.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(SqlStatments.SELECT.toString().formatted("*", Menu.tableName()));
+        ) {
+            ResultSet resultSet = preparedStatement.executeQuery();
             List<Menu> list = new ArrayList<>();
-            while (rs.next()) {
+            while (resultSet.next()) {
                 Menu menuModel = new Menu();
-                menuModel.setId(rs.getInt("id"));
-                menuModel.setName(rs.getString("name"));
-                menuModel.setDescription(rs.getString("description"));
+                menuModel.setId(resultSet.getInt("id"));
+                menuModel.setName(resultSet.getString("name"));
+                menuModel.setDescription(resultSet.getString("description"));
                 list.add(menuModel);
             }
             return list;
         }
     }
+
     public Menu save(Menu menuModel) throws SQLException {
         Menu menuSaved = null;
-        try( Connection con = cm.getConnection();
-             PreparedStatement ps = con.prepareStatement(SqlStatments.INSERT.toString().formatted(Menu.tableName(), "name ,description","?, ?"),
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SqlStatments.INSERT.toString().formatted(Menu.tableName(), "name ,description", "?, ?"),
                      Statement.RETURN_GENERATED_KEYS);) {
 
-            ps.setString(1, menuModel.getName());
-            ps.setString(2, menuModel.getDescription());
-            int rs = ps.executeUpdate();
-            if (rs > 0) {
+            preparedStatement.setString(1, menuModel.getName());
+            preparedStatement.setString(2, menuModel.getDescription());
+            int resultSet = preparedStatement.executeUpdate();
+            if (resultSet > 0) {
                 menuSaved = menuModel;
             }
         }
         return menuSaved;
     }
+
     public Menu update(Menu updateModel, int menuId) throws SQLException {
-        try (Connection con = cm.getConnection();
-             PreparedStatement ps = con.prepareStatement(SqlStatments.UPDATE.toString().formatted(Menu.tableName(), "name = ?, description = ?", "id = ?"));) {
-            ps.setString(1, updateModel.getName());
-            ps.setString(2, updateModel.getDescription());
-            ps.setInt(3, menuId);
-            int res = ps.executeUpdate();
-            if (res > 0) {
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SqlStatments.UPDATE.toString().formatted(Menu.tableName(), "name = ?, description = ?", "id = ?"));) {
+            preparedStatement.setString(1, updateModel.getName());
+            preparedStatement.setString(2, updateModel.getDescription());
+            preparedStatement.setInt(3, menuId);
+            int resultSet = preparedStatement.executeUpdate();
+            if (resultSet > 0) {
                 return updateModel;
             } else {
                 return null;
@@ -86,40 +97,43 @@ public class MenuRepository {
         }
 
     }
+
     public boolean delete(int id) throws SQLException {
-        try (Connection con = cm.getConnection();
-             PreparedStatement ps = con.prepareStatement(SqlStatments.DELETE.toString().formatted(Menu.tableName(), "id = ?"));){
-            ps.setInt(1, id);
-            int rs = ps.executeUpdate();
-            if (rs > 0) {
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SqlStatments.DELETE.toString().formatted(Menu.tableName(), "id = ?"));) {
+            preparedStatement.setInt(1, id);
+            int resultSet = preparedStatement.executeUpdate();
+            if (resultSet > 0) {
                 return true;
             }
         }
         return false;
     }
-    public List<Menu> findMenuByRestaurantId(int restaurantId) throws SQLException {
-        try (            Connection con = cm.getConnection();
-                         PreparedStatement ps = con.prepareStatement("SELECT m.id, m.name, m.description FROM menu m " +
-                                 "JOIN restaurants_menus rm ON m.id = rm.menu_id " +
-                                 "WHERE rm.restaurant_id = ?");) {
 
-            ps.setInt(1, restaurantId);
-            ResultSet rs = ps.executeQuery();
+    public List<Menu> findMenuByRestaurantId(int restaurantId) throws SQLException {
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT m.id, m.name, m.description FROM menu m " +
+                     "JOIN restaurants_menus rm ON m.id = rm.menu_id " +
+                     "WHERE rm.restaurant_id = ?");) {
+
+            preparedStatement.setInt(1, restaurantId);
+            ResultSet resultSet = preparedStatement.executeQuery();
             List<Menu> list = new ArrayList<>();
-            while (rs.next()) {
+            while (resultSet.next()) {
                 Menu menuModel = new Menu();
-                menuModel.setId(rs.getInt("id"));
-                menuModel.setName(rs.getString("name"));
-                menuModel.setDescription(rs.getString("description"));
+                menuModel.setId(resultSet.getInt("id"));
+                menuModel.setName(resultSet.getString("name"));
+                menuModel.setDescription(resultSet.getString("description"));
                 list.add(menuModel);
             }
             return list;
         }
     }
+
     public void dropTable() throws SQLException {
-        try (Connection con = cm.getConnection();
-             PreparedStatement ps = con.prepareStatement(SqlStatments.DROP_TABLE_CASCADE.toString().formatted(Menu.tableName()))) {
-            ps.executeUpdate();
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SqlStatments.DROP_TABLE_CASCADE.toString().formatted(Menu.tableName()))) {
+            preparedStatement.executeUpdate();
         }
     }
 }

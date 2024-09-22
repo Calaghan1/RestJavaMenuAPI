@@ -11,9 +11,13 @@ import java.util.List;
 @Mapper
 public interface MenuMapperInterface {
 
-    MenuMapperInterface INSTANCE  = Mappers.getMapper(MenuMapperInterface.class);
+    MenuMapperInterface INSTANCE = Mappers.getMapper(MenuMapperInterface.class);
+
     MenuDto toDto(Menu menu);
+
     List<MenuDto> toDoList(List<Menu> menus);
+
     Menu toEntity(MenuDto menuDto);
+
     List<Menu> toEntityList(List<MenuDto> menuDtos);
 }

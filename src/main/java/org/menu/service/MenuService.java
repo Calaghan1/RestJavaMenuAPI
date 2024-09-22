@@ -19,10 +19,12 @@ public class MenuService {
         this.menuRepo = new MenuRepository();
         this.dishRepo = new DishesRepository();
     }
+
     public MenuService(MenuRepository menuRepo, DishesRepository dishRepo) {
         this.menuRepo = menuRepo;
         this.dishRepo = dishRepo;
     }
+
     public MenuDto getById(int i) {
         try {
             Menu menu = menuRepo.findById(i);
@@ -34,6 +36,7 @@ public class MenuService {
         }
 
     }
+
     public List<MenuDto> getAll() {
         try {
             List<Menu> menus = menuRepo.findAll();
@@ -47,26 +50,29 @@ public class MenuService {
         }
 
     }
+
     public MenuDto save(MenuDto menuDto) {
         try {
-            Menu resp = menuRepo.save(mapper.toEntity(menuDto));
-            return mapper.toDto(resp);
+            Menu menu = menuRepo.save(mapper.toEntity(menuDto));
+            return mapper.toDto(menu);
         } catch (Exception e) {
             logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;
         }
 
     }
+
     public MenuDto update(MenuDto menuDto, int menuID) {
         try {
-            Menu resp = menuRepo.update(mapper.toEntity(menuDto), menuID);
-            return mapper.toDto(resp);
+            Menu menu = menuRepo.update(mapper.toEntity(menuDto), menuID);
+            return mapper.toDto(menu);
         } catch (Exception e) {
             logger.severe(ErrorHandler.errorMassage(this.getClass().getName(), e));
             return null;
         }
 
     }
+
     public boolean delete(int i) {
         try {
             return menuRepo.delete(i);
@@ -76,6 +82,7 @@ public class MenuService {
         }
 
     }
+
     public List<MenuDto> findMenuByRestaurantId(int id) {
         try {
             List<Menu> resp = menuRepo.findMenuByRestaurantId(id);

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.*;
 import org.menu.db.ConnectionManager;
 import org.menu.model.Menu;
 import org.menu.model.Restaurants;
-import org.menu.servlet.dto.MenuDto;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.sql.SQLException;
@@ -18,14 +17,17 @@ class MenuRepositoryTest {
     MenuRepository menuRepository;
     RestaurantsRepository restaurantsRepository;
     RestaurantMenuRepo restaurantMenuRepo;
+
     @BeforeAll
     static void beforeAll() {
         postgres.start();
     }
+
     @AfterAll
     static void afterAll() {
         postgres.stop();
     }
+
     @BeforeEach
     void setUp() throws SQLException {
         ConnectionManager connectionManager = new ConnectionManager(postgres.getJdbcUrl(), postgres.getUsername(), postgres.getPassword());
@@ -34,14 +36,16 @@ class MenuRepositoryTest {
         restaurantMenuRepo = new RestaurantMenuRepo(connectionManager);
         menuRepository.initTable();
     }
+
     @AfterEach
-    void tearDown() throws SQLException  {
+    void tearDown() throws SQLException {
         menuRepository.dropTable();
     }
+
     @Test
     void findById() throws SQLException {
         Menu menu = new Menu();
-        menu.setName("HUi");
+        menu.setName("Test");
         menu.setDescription("HAhAHAAHA");
         menuRepository.save(menu);
         Menu menu1 = menuRepository.findById(1);

@@ -16,20 +16,23 @@ import java.io.IOException;
 
 @WebServlet(name = "ConnectMenuAndRestServlet", value = "/connect")
 public class ConnectMenuAndRestServlet extends HttpServlet {
-    private final transient  MenuService menuService;
-    private final transient  RestaurantService restaurantService;
-    private final transient  RestaurantToMenuService restaurantToMenuService;
+    private final transient MenuService menuService;
+    private final transient RestaurantService restaurantService;
+    private final transient RestaurantToMenuService restaurantToMenuService;
+
     public ConnectMenuAndRestServlet() {
         this.menuService = new MenuService();
         this.restaurantService = new RestaurantService();
         this.restaurantToMenuService = new RestaurantToMenuService();
     }
+
     public ConnectMenuAndRestServlet(MenuService menuService, RestaurantService restaurantService,
                                      RestaurantToMenuService restaurantToMenuService) {
         this.menuService = menuService;
         this.restaurantService = restaurantService;
         this.restaurantToMenuService = restaurantToMenuService;
     }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("application/json");
@@ -37,9 +40,9 @@ public class ConnectMenuAndRestServlet extends HttpServlet {
         try {
             int menuId = Integer.parseInt(request.getParameter("menuId"));
             int restId = Integer.parseInt(request.getParameter("restId"));
-            MenuDto mDto = menuService.getById(menuId);
-            RestaurantsDto rDto = restaurantService.getById(restId);
-            if (mDto != null && rDto != null) {
+            MenuDto menuDto = menuService.getById(menuId);
+            RestaurantsDto restaurantsDto = restaurantService.getById(restId);
+            if (menuDto != null && restaurantsDto != null) {
                 if (restaurantToMenuService.save(menuId, restId)) {
                     response.setStatus(HttpServletResponse.SC_CREATED);
                     response.getWriter().write("Done");
@@ -51,7 +54,7 @@ public class ConnectMenuAndRestServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 response.getWriter().write("No such Menu or Restaurant found");
             }
-        } catch (NumberFormatException | IOException  e) {
+        } catch (NumberFormatException | IOException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }

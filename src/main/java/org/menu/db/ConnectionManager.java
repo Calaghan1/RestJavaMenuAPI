@@ -11,9 +11,9 @@ import java.util.logging.Logger;
 
 public class ConnectionManager {
     Logger log = Logger.getLogger(ConnectionManager.class.getName());
-    private String url;
-    private String user;
-    private String password;
+    private final String url;
+    private final String user;
+    private final String password;
     public ConnectionManager() {
         Dotenv dotenv = Dotenv.configure()
                 .directory(Settings.ENV_PATH.toString())
@@ -30,7 +30,6 @@ public class ConnectionManager {
 
     public void init() {
         try {
-            // Register PostgreSQL Driver
             Class.forName("org.postgresql.Driver");
             log.info("Driver loaded");
         } catch (ClassNotFoundException e) {

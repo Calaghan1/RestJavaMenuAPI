@@ -4,14 +4,14 @@ import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kotlin.jvm.internal.unsafe.MonitorKt;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.menu.service.RestaurantService;
 import org.menu.service.RestaurantToMenuService;
 import org.menu.servlet.RestorauntToMenuServlet;
 import org.menu.servlet.dto.RestaurantsDto;
-import org.mockito.Mock;
+
 import org.mockito.Mockito;
 
 import java.io.IOException;
@@ -23,7 +23,7 @@ import java.util.List;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class RestaurantToMenuServletTest {
+class RestaurantToMenuServletTest {
 
     private final HttpServletRequest request = mock(HttpServletRequest.class);
     private final HttpServletResponse response = mock(HttpServletResponse.class);
@@ -58,6 +58,7 @@ public class RestaurantToMenuServletTest {
         Assertions.assertEquals(json.toString(), stringWriter.toString());
 
     }
+
     @Test
     void postTest() throws ServletException, IOException {
         StringWriter stringWriter = new StringWriter();

@@ -16,13 +16,13 @@ import org.mockito.Mockito;
 import java.sql.SQLException;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
-public class ContextServletTest {
+
+class ContextServletTest {
     private final DishesRepository dishesRepository = mock(DishesRepository.class);
     private final MenuRepository menuRepository = mock(MenuRepository.class);
-    private final RestaurantsRepository restaurantsRepository  = mock(RestaurantsRepository.class);
-    private final RestaurantMenuRepo restaurantMenuRepo  = mock(RestaurantMenuRepo.class);
+    private final RestaurantsRepository restaurantsRepository = mock(RestaurantsRepository.class);
+    private final RestaurantMenuRepo restaurantMenuRepo = mock(RestaurantMenuRepo.class);
     private final ConnectionManager connectionManager = mock(ConnectionManager.class);
     private final ContextServlet contextServlet = new ContextServlet(dishesRepository, menuRepository, restaurantsRepository,
             restaurantMenuRepo, connectionManager);
